@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+    {% load static %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+
+    <title>GestureMate</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'Home' %}">
+                <i class="fas fa-sign-language me-2"></i>
+                Vice Versa
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'Home' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'text_to_sign' %}">Text to Sign</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'video' %}">Find the Sign</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'text-animation' %}">Animated Sign</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'learn' %}">Learn</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'Logout_fn' %}">Logout</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    {% block home %}
+    <!-- Hero Section -->
+    <section class="hero-section text-center">
+        <div class="container">
+            <h1 class="hero-title animate-fade-in">Discover. Learn. Connect.</h1>
+            <p class="hero-subtitle animate-fade-in">Master American Sign Language through interactive learning</p>
+            <form action="{% url 'show_images' %}" method="post" enctype="multipart/form-data" class="mt-5">
+                {% csrf_token %}
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control form-control-lg" placeholder="Enter text to convert to sign" name="text">
+                            <button type="submit" class="btn btn-custom">Convert Now</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-code feature-icon"></i>
+                        <h3>Backend Technologies</h3>
+                        <p>Powered by Django, our robust backend ensures seamless performance and reliable data processing for an optimal learning experience.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-brain feature-icon"></i>
+                        <h3>Machine Learning</h3>
+                        <p>Advanced ML algorithms analyze and interpret sign language gestures with high accuracy for effective learning and practice.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="feature-card">
+                        <i class="fas fa-laptop-code feature-icon"></i>
+                        <h3>Frontend Technologies</h3>
+                        <p>Modern, responsive interface built with the latest web technologies for an intuitive and engaging user experience.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technologies Section -->
+    <section class="timeline-section">
+        <div class="container">
+            <h2 class="text-center mb-5">Technologies We Use</h2>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="timeline-item">
+                        <h4>Django & Python</h4>
+                        <p>Robust backend framework for secure and scalable web applications</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>OpenCV (CV2)</h4>
+                        <p>Advanced computer vision library for real-time image and video processing</p>
+                    </div>
+                    <div class="timeline-item">
+                        <h4>NumPy & Matplotlib</h4>
+                        <p>Powerful libraries for numerical computing and data visualization</p>
+                    </div>
+                </div>
+            </div>
+            
+            {% comment %} <div class="text-center mt-5">
+                <h3 class="mb-4">Ready to start learning?</h3>
+                <form action="{% url 'hand_signal_detection' %}" method="post" enctype="application/x-www-form-urlencoded">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-custom">Try Hand Detection</button>
+                </form>
+                
+            </div> {% endcomment %}
+        </div>
+    </section>
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4">
+                    <h5>Sign Language</h5>
+                    <p>Empowering communication through technology</p>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'Home' %}" class="footer-link">Home</a></li>
+                        <li><a href="{% url 'text_to_sign' %}" class="footer-link">Text to Sign</a></li>
+                        <li><a href="{% url 'video' %}" class="footer-link">Find the Sign</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <h5>Contact</h5>
+                    <p>Phone: 4567-4555-102</p>
+                    <p>Email: info@signlanguage.com</p>
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <p class="mb-0">Copyright © 2024. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    {% endblock %}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

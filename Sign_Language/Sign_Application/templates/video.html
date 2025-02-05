@@ -1,0 +1,171 @@
+{% extends "home.html" %}
+{% block home %}
+{% load static %}
+<style>
+    /* CSS styles */
+    #main {
+        margin-top: 50px;
+        text-align: center;
+    }
+
+    h1 {
+        font-size: 36px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    input[type="text"] {
+        padding: 10px;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+        width: 300px;
+        margin-bottom: 10px;
+        font-size: 16px;
+    }
+
+    button[type="submit"],
+    .btn-custom {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 10px;
+    }
+
+    button[type="submit"]:hover,
+    .btn-custom:hover {
+        background-color: #0056b3;
+    }
+
+    p {
+        font-size: 24px;
+        color: #007bff;
+        margin-top: 20px;
+    }
+
+    #camera-container {
+        display: none; /* Initially hidden */
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    #camera-stream {
+        width: 100%;
+        height: auto;
+        max-width: 800px;
+        border-radius: 10px;
+    }
+
+    #predictions {
+        margin-top: 20px;
+    }
+</style>
+
+<script>
+    var speechSynthesisUtterance;
+
+    function startVoice() {
+      var resultText = document.getElementById('resultText').innerText;
+      if ('speechSynthesis' in window) {
+        speechSynthesisUtterance = new SpeechSynthesisUtterance(resultText);
+        speechSynthesisUtterance.lang = 'en-US';
+
+        window.speechSynthesis.speak(speechSynthesisUtterance);
+      } else {
+        alert('Text-to-speech is not supported in your browser.');
+      }
+    }
+
+    function stopVoice() {
+      if (speechSynthesisUtterance && 'speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    // Stop speech when leaving the page
+    window.onbeforeunload = function() {
+      stopVoice();
+    };
+
+    // Function to start the video stream
+    function startVideo() {
+        const cameraContainer = document.getElementById('camera-container');
+        const cameraStream = document.getElementById('camera-stream');
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+
+        cameraContainer.style.display = 'block'; // Show the video stream
+        startButton.style.display = 'none'; // Hide the start button
+        stopButton.style.display = 'inline-block'; // Show the stop button
+
+        // Optionally, refresh the video stream
+        cameraStream.src = cameraStream.src; 
+    }
+
+    // Function to stop the video stream
+    function stopVideo() {
+        const cameraContainer = document.getElementById('camera-container');
+        const startButton = document.getElementById('startButton');
+        const stopButton = document.getElementById('stopButton');
+
+        cameraContainer.style.display = 'none'; 
+        startButton.style.display = 'inline-block';
+        stopButton.style.display = 'none'; 
+        stopVoice();
+    }
+</script>
+<div id='main'>
+    <section class="faq-section section-padding" id="section_4">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-12">
+                    <h2 class="mb-4">How To Analyze Motion</h2>
+                </div>
+                <div class="clearfix"></div>
+                <div class="col-lg-5 col-12">
+                    <img src="{% static 'images/faq_graphic.jpg' %}" class="img-fluid" alt="FAQs">
+                </div>
+                <div class="col-lg-6 col-12 m-auto">
+                    <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                    How to enable video
+                                </button>
+                            </h2>
+                            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    Click on the button. <strong>Only Allow One Hand For The Camera Reading</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button id="startButton" class="btn-custom" onclick="startVideo()">Start</button>
+                            <button id="stopButton" class="btn-custom" onclick="stopVideo()" style="display:none;">Stop</button>
+                        </div>
+                   
+                    </div>
+                </div>
+                <div id="camera-container" class="col-lg-12">
+                    <img id="camera-stream" src="{% url 'video_feed' %}" alt="Live Video Stream">
+                </div>
+            
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock home %}

@@ -1,0 +1,92 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+  <head>
+  	<title>Login </title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
+
+	<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	<link rel="stylesheet" href="{% static 'assets/fonts/linearicons/style.css' %}">
+
+	<link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
+
+	</head>
+	{% block content %}
+	<body class="img js-fullheight" >
+	
+		<div class="wrapper">
+			<div class="inner">
+				<img src="{% static 'assets/images/image-2.png' %}" alt="" class="image-1">
+				<form action="{% url 'Login_fun' %}" method="post">
+					{% csrf_token %}
+					<h3>Log In</h3>
+					
+
+					<div class="form-holder">
+						<span class="lnr lnr-envelope"></span>
+						<input type="email" class="form-control" placeholder="Mail" name="email" required>
+					</div>
+					<div class="form-holder">
+						<span class="lnr lnr-lock"></span>
+						<input type="password" class="form-control" placeholder="Password" name="password" required>
+					</div>
+					
+					<button type="submit">
+						<span>LogIn</span>
+					</button>
+					<br><br>
+				<div class="row" >
+					<div class="col" >
+						<a href="{% url 'RegistrationForm' %}" style="text-decoration: none;">	          <p class="w-100 text-center"> Sign Up </p></a>
+		
+					</div>
+					<div class="col">
+						<a href="{% url 'forget_password_enter_email' %}" style="text-decoration: none;">	          <p class="w-100 text-center"> Forgot Password</p></a>
+ 
+					</div>
+				</div>
+
+
+				</form>
+				<img src="{% static 'assets/images/image-2.png' %}" alt="" class="image-2">
+			</div>
+
+		</div>
+
+		<script src="{% static 'assets/js/jquery-3.3.1.min.js' %}"></script>
+		<script src="{% static 'assets/js/main.js' %}"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+ {% if messages %}
+        {% for i in messages %}
+            {% if i.tags == 'warning' %}
+                <script>
+                    swal('{{i}}','', 'warning');
+                </script>
+            {% elif i.tags == 'error' %}
+                <script>
+                    swal('{{i}}','', 'error');
+                </script>
+            {% else %}
+                <script>
+                    swal('{{i}}','', 'success');
+                </script>
+            {% endif %}
+
+        {% endfor %}
+    {% endif %}
+
+
+
+	</body>
+	{% endblock %}
+</html>
+

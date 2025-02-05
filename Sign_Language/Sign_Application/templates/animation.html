@@ -1,0 +1,131 @@
+{% extends "home.html" %}
+{% block home %}
+{% load static %}
+   <style>
+
+       .containers {
+           max-width: 800px;
+           margin: 0 auto;
+           padding: 20px;
+           background: white;
+           border-radius: 12px;
+           box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+       }
+
+       h1 {
+           text-align: center;
+           color: #1f2937;
+           margin-bottom: 30px;
+       }
+
+       .input-group {
+           display: flex;
+           gap: 10px;
+           margin-bottom: 30px;
+       }
+
+       input {
+           flex: 1;
+           padding: 10px 15px;
+           border: 1px solid #d1d5db;
+           border-radius: 8px;
+           font-size: 16px;
+       }
+
+       input:focus {
+           outline: 2px solid #3b82f6;
+       }
+
+       button {
+           padding: 10px 20px;
+           background: #3b82f6;
+           color: white;
+           border: none;
+           border-radius: 8px;
+           cursor: pointer;
+           transition: background 0.3s;
+       }
+
+       button:hover {
+           background: #2563eb;
+       }
+
+       .animation-box {
+           height: 250px;
+           background: #f9fafb;
+           border-radius: 8px;
+           display: flex;
+           align-items: center;
+           justify-content: center;
+       }
+
+       .animated-text {
+           font-size: 24px;
+           font-weight: bold;
+           color: #1f2937;
+       }
+
+       .bounce {
+           animation: bounceAnimation 2s;
+       }
+
+       @keyframes bounceAnimation {
+           0%, 20%, 50%, 80%, 100% {
+               transform: translateY(0);
+           }
+           40% {
+               transform: translateY(-30px);
+           }
+           60% {
+               transform: translateY(-15px);
+           }
+       }
+       .gif-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .gif-container img {
+            width: 250px;
+            height: 250px;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+   </style>
+
+   <div class="containers mt-5">
+       <h1>Text Animation</h1>
+       
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-group">
+           <input type="text" name="text" id="textInput" placeholder="Enter your text...">
+           <button onclick="animate()">Animate</button>
+        </div>
+        </form>
+       
+       <div class="animation-box">
+            {% if animation %}
+                <!-- <h3>Sign Language Animation:</h3> -->
+                <div class="gif-container">
+                    {% for gif in animation %}
+                        <img src="{% static gif %}" alt="Sign Language Animation">
+                    {% endfor %}
+                </div>
+            {% endif %}
+        <p id="animatedText" class="animated-text"></p>
+       </div>
+   </div>
+
+   <script>
+       function animate() {
+           const text = document.getElementById('textInput').value;
+           const animatedText = document.getElementById('animatedText');
+           animatedText.textContent = text;
+           animatedText.classList.remove('bounce');
+           void animatedText.offsetWidth;
+           animatedText.classList.add('bounce');
+       }
+   </script>
+{% endblock %}

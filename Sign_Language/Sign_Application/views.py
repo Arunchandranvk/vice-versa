@@ -161,9 +161,32 @@ from cvzone.HandTrackingModule import HandDetector
 from django.http import StreamingHttpResponse
 from django.shortcuts import render
 import time
+from django.views.decorators.csrf import csrf_exempt
 
+
+stream_active = False
+prediction_active = False
+
+@csrf_exempt
+def stop_video(request):
+    global stream_active, prediction_active
+    if request.method == 'POST':
+        # Set the flags to stop video and predictions
+        stream_active = False
+        prediction_active = False
+        
+        return JsonResponse({"message": "Video feed and prediction stopped successfully."})
+
+@csrf_exempt
+def start_video(request):
+    global stream_active, prediction_active
+    if request.method == 'POST':
+        # Set the flags to start video and predictions
+        stream_active = True
+        prediction_active = True
+        return JsonResponse({"message": "Video feed and prediction started successfully."})
 # ✅ Load the trained model
-model_path = "Sign_Language/my_model.h5"
+model_path = "D:/Completed Projects/Sign Language (American)/Sign_Language/my_model.h5"
 try:
     model = load_model(model_path, compile=False)
     print("✅ Model loaded successfully!")
@@ -176,8 +199,15 @@ class_labels = {i: chr(65 + i) for i in range(26)}  # A-Z mapping
 # ✅ Initialize hand detector
 detector = HandDetector(maxHands=1)  # Detect one hand at a time
 imgSize = 400  # Match training image size
+import time
+import cv2
+import numpy as np
 
-# ✅ Sentence formation variables
+# Global flags
+stream_active = False
+prediction_active = False
+
+# Set other variables for your stream and prediction
 sentence = ""
 current_word = ""
 last_predicted_letter = None
@@ -190,8 +220,17 @@ def generate_frames():
     global sentence, current_word, last_predicted_letter, last_detection_time, confirmation_counter
     
     cap = cv2.VideoCapture(0)
+    
+    if not cap.isOpened():
+        print("Error: Could not open video stream")
+        return
 
     while cap.isOpened():
+        # Check if stream should be active
+        if not stream_active:
+            print("Stream stopped.")
+            break
+        
         success, frame = cap.read()
         if not success:
             break
@@ -200,7 +239,7 @@ def generate_frames():
         imgWhite = np.ones((imgSize, imgSize, 3), np.uint8) * 255  # White background
         predicted_letter = ""
 
-        if hands:
+        if hands and prediction_active:
             hand = hands[0]
             lmList = hand["lmList"]
             bbox = hand["bbox"]
@@ -239,7 +278,7 @@ def generate_frames():
                 predicted_label = np.argmax(prediction)
                 predicted_letter = class_labels.get(predicted_label, "")
                 cv2.putText(frame, f"{predicted_letter}", (x_min, y_min - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 0), 3)
+                            cv2.FONT_HERSHEY_SIMPLEX, 1.5, (0, 255, 0), 3)
                 if predicted_letter == last_predicted_letter:
                     confirmation_counter += 1
                 else:
@@ -276,10 +315,22 @@ def generate_frames():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
+    # Reset the current_word when the stream is closed
+    current_word = ""
+    print("Stream closed. Current word reset.")
+    
     cap.release()
     cv2.destroyAllWindows()
 
+
+
+
+    
+    
 def video_feed(request):
+    global stream_active, prediction_active
+    stream_active = True
+    prediction_active = True
     return StreamingHttpResponse(generate_frames(), content_type='multipart/x-mixed-replace; boundary=frame')
 
 # def index(request):

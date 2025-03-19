@@ -9,7 +9,10 @@ urlpatterns=[
     path('video-feed/', views.video_feed, name='video_feed'),
     path('show_images/',views.show_imagess,name="show_images"),
     path('Registration_save/',views.Registration_save,name="Registration_save"),
-
+    
+    path('start_video/', views.start_video, name='start_video'),
+    path('stop_video/', views.stop_video, name='stop_video'),
+    
     path('login/',views.Login_Pg,name="Login_Pg"),
     path('RegistrationForm/',views.RegistrationForm,name="RegistrationForm"),
     path('',views.MainHomeView.as_view(),name="main"),

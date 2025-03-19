@@ -108,9 +108,13 @@
         cameraContainer.style.display = 'block'; // Show the video stream
         startButton.style.display = 'none'; // Hide the start button
         stopButton.style.display = 'inline-block'; // Show the stop button
-
-        // Optionally, refresh the video stream
-        cameraStream.src = cameraStream.src; 
+        
+        // Send POST request to start video feed and predictions
+        fetch('/start_video/', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.message);
+        });
     }
 
     // Function to stop the video stream
@@ -123,8 +127,24 @@
         startButton.style.display = 'inline-block';
         stopButton.style.display = 'none'; 
         stopVoice();
+
+        // Send POST request to stop video feed and predictions
+        fetch('/stop_video/', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.message);
+            });
     }
+
+    // Listen for the 'Esc' key to stop the video and predictions
+    document.addEventListener('keydown', function(event) {
+        if (event.key === 'Escape') {
+            stopVideo();
+        }
+    });
 </script>
+
+
 <div id='main'>
     <section class="faq-section section-padding" id="section_4">
         <div class="container">
@@ -153,16 +173,15 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button id="startButton" class="btn-custom" onclick="startVideo()">Start</button>
-                            <button id="stopButton" class="btn-custom" onclick="stopVideo()" style="display:none;">Stop</button>
+                            <a href="{% url 'video' %}" class="btn-custom" style="text-decoration: none;">Show Sign</a> 
+                            <button id="startButton" class="btn-custom" onclick="startVideo()">Open   </button>
+                            <button id="stopButton" class="btn-custom" onclick="stopVideo()" style="display:none;">Close</button>
                         </div>
-                   
                     </div>
                 </div>
                 <div id="camera-container" class="col-lg-12">
                     <img id="camera-stream" src="{% url 'video_feed' %}" alt="Live Video Stream">
                 </div>
-            
             </div>
         </div>
     </section>

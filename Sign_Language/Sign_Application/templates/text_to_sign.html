@@ -50,7 +50,7 @@
         box-shadow: 0 0 8px rgba(52, 152, 219, 0.3);
     }
 
-    button[type="submit"] {
+    button[type="submit"], #micButton {
         padding: 12px 25px;
         background-color: #3498db;
         color: white;
@@ -63,7 +63,7 @@
         letter-spacing: 1px;
     }
 
-    button[type="submit"]:hover {
+    button[type="submit"]:hover, #micButton:hover {
         background-color: #2980b9;
         transform: translateY(-2px);
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -128,11 +128,13 @@
         <h1>Text to Sign Language</h1>
         <form id="myForm" action="{% url 'show_images' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
-            <input type="text" placeholder="Enter text to translate" name="text" required>
-            <button type="submit">Translate</button>
+            <input type="text" id="inputText" placeholder="Enter text to translate" name="text" required>
+            <button type="submit" id="submitButton">Submit</button>
+            <button type="button" id="micButton">🎤</button>
         </form>
     </div>
 </div>
+
 {% if images %}
 <div class="sign-language-images">
     {% for image in images %}
@@ -140,20 +142,64 @@
     {% endfor %}
 </div>
 {% endif %}
+
 <script>
+    // Function to start voice recognition and populate input field
+    function startVoiceRecognition() {
+        if (!('webkitSpeechRecognition' in window)) {
+            alert("Sorry, your browser doesn't support speech recognition.");
+            return;
+        }
+
+        const recognition = new webkitSpeechRecognition();
+        recognition.lang = 'en-US'; // You can change to other language codes if needed
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        recognition.onstart = function() {
+            document.getElementById("micButton").textContent = "Listening...";
+        };
+
+        recognition.onresult = function(event) {
+            const transcript = event.results[0][0].transcript;
+            document.getElementById("inputText").value = transcript;
+
+            // After voice input, change button text to "Generate" and submit
+            document.getElementById("submitButton").textContent = "Generate";
+            document.getElementById("myForm").submit();  // Submit the form programmatically after recognition
+        };
+
+        recognition.onerror = function(event) {
+            console.error("Speech recognition error:", event.error);
+            alert("Speech recognition error: " + event.error);
+        };
+
+        recognition.onend = function() {
+            document.getElementById("micButton").textContent = "🎤";
+        };
+
+        recognition.start();
+    }
+
+    // Add event listener to the mic button
+    document.getElementById("micButton").addEventListener("click", startVoiceRecognition);
+
+    // Handle form submission (speak and submit)
     document.getElementById("myForm").addEventListener("submit", function(event) {
         event.preventDefault();
         var inputText = document.querySelector("input[name='text']").value.trim();
-        
+
         // Check if input is not empty
         if (inputText) {
-            speakInput(inputText);
+            speakInput(inputText);  // Optional: You can speak the input text when it's submitted
             this.submit();
+            speakInput(inputText);
         } else {
             alert("Please enter some text to translate.");
         }
     });
 
+    // Optional: Function to speak input text (text-to-speech)
     function speakInput(text) {
         var speech = new SpeechSynthesisUtterance();
         speech.text = text;

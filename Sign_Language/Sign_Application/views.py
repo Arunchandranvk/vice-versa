@@ -163,7 +163,7 @@ from django.shortcuts import render
 import time
 
 # ✅ Load the trained model
-model_path = "D:/Completed Projects/Sign Language (American)/Sign_Language/my_model.h5"
+model_path = "Sign_Language/my_model.h5"
 try:
     model = load_model(model_path, compile=False)
     print("✅ Model loaded successfully!")
@@ -408,7 +408,7 @@ def show_images(user_input):
             # Iterate through valid image formats
         
             for img_format in valid_formats:
-                img_path = f"D:/Internship Luminar/Main Projects/Sign Language (American)/Sign_Language/ASL/{char.lower()}.{img_format}"
+                img_path = f"/Sign_Language/ASL/{char.lower()}.{img_format}"
 
                 try:
                     img = Image.open(img_path)
@@ -420,7 +420,7 @@ def show_images(user_input):
                     pass  # Continue to the next format if file not found
         elif char.isspace():
             # Display space image
-            space_img_path = f"D:/Internship Luminar/Main Projects/Sign Language (American)/Sign_Language/ASL/space.jpg"
+            space_img_path = f"/Sign_Language/ASL/space.jpg"
             img = Image.open(space_img_path)
             axs[i].imshow(img)
             axs[i].axis('off') 

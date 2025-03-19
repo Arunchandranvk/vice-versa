@@ -3,18 +3,251 @@
     {% load static %}
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="shortcut icon" type="image/x-icon" href="{% static 'images/logo.png' %}">
 
     <title>GestureMate</title>
     
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <!-- Bootstrap CSS -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    
+    <style>
+        :root {
+            --primary-color: #4e73df;
+            --primary-hover: #3a5ccc;
+            --secondary-color: #f8f9fc;
+            --text-color: #5a5c69;
+            --light-text: #858796;
+            --dark-text: #2e384d;
+            --error-color: #e74a3b;
+            --success-color: #1cc88a;
+            --warning-color: #f6c23e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Navbar Styles */
+        .navbar {
+            background-color: white;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary-color);
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            color: var(--text-color);
+            margin: 0 10px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        /* Hero Section */
+        .hero-section {
+            padding: 100px 0;
+            text-align: center;
+            position: relative;
+        }
+        
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(78, 115, 223, 0.1) 0%, rgba(98, 59, 219, 0.1) 100%);
+            z-index: -1;
+        }
+        
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--dark-text);
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-color);
+            margin-bottom: 40px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .search-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            padding: 10px;
+        }
+        
+        .form-control {
+            height: 55px;
+            border: none;
+            font-size: 1rem;
+            color: var(--dark-text);
+            background-color: transparent;
+        }
+        
+        .form-control:focus {
+            box-shadow: none;
+        }
+        
+        .btn-custom {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .btn-custom:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(78, 115, 223, 0.3);
+        }
+        
+        /* Features Section */
+        .features-section {
+            padding: 80px 0;
+            background-color: white;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--dark-text);
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        
+        .feature-card {
+            background-color: var(--secondary-color);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            transition: all 0.3s;
+            height: 100%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 15px;
+        }
+        
+        .feature-text {
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-text);
+            color: white;
+            padding: 60px 0 30px;
+            margin-top: auto;
+        }
+        
+        .footer h5 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .footer p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 10px;
+        }
+        
+        .footer-link {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: all 0.3s;
+        }
+        
+        .footer-link:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .hero-section {
+                padding: 60px 0;
+            }
+            
+            .features-section {
+                padding: 60px 0;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Navbar -->
@@ -22,7 +255,7 @@
         <div class="container">
             <a class="navbar-brand" href="{% url 'Home' %}">
                 <i class="fas fa-sign-language me-2"></i>
-                Vice Versa
+                GestureMate
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
@@ -38,9 +271,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'video' %}">Find the Sign</a>
                     </li>
-                    <!-- <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'text-animation' %}">Animated Sign</a>
-                    </li>-->
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'learn' %}">Learn</a>
                     </li>
@@ -53,18 +286,17 @@
     </nav>
     {% block home %}
     <!-- Hero Section -->
-    <section class="hero-section text-center">
+    <section class="hero-section">
         <div class="container">
-            <h1 class="hero-title animate-fade-in">Discover. Learn. Connect.</h1>
-            <p class="hero-subtitle animate-fade-in">Master American Sign Language through interactive learning</p>
+            <h1 class="hero-title">Discover. Learn. Connect.</h1>
+            <p class="hero-subtitle">Master American Sign Language through interactive learning</p>
+            
             <form action="{% url 'show_images' %}" method="post" enctype="multipart/form-data" class="mt-5">
                 {% csrf_token %}
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <input type="text" class="form-control form-control-lg" placeholder="Enter text to convert to sign" name="text">
-                            <button type="submit" class="btn btn-custom">Convert Now</button>
-                        </div>
+                <div class="search-container">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Enter text to convert to sign" name="text">
+                        <button type="submit" class="btn btn-custom">Convert Now</button>
                     </div>
                 </div>
             </form>
@@ -72,36 +304,132 @@
     </section>
 
     <!-- Features Section -->
+    <section class="features-section">
+        <div class="container">
+            <h2 class="section-title">Our Features</h2>
+            
+            <div class="row">
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-comment-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Text to Sign</h3>
+                        <p class="feature-text">Instantly convert text to American Sign Language images for clear communication.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3 class="feature-title">Find the Sign</h3>
+                        <p class="feature-text">Search for specific signs and learn their meanings through our extensive library.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-film"></i>
+                        </div>
+                        <h3 class="feature-title">Animated Sign</h3>
+                        <p class="feature-text">View animated demonstrations of signs for better understanding of movement and gestures.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3 class="feature-title">Interactive Learning</h3>
+                        <p class="feature-text">Learn ASL through engaging lessons designed for all skill levels.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="feature-title">Community Support</h3>
+                        <p class="feature-text">Connect with other learners and native signers to practice and improve.</p>
+                    </div>
+                </div>
+                
+                <div class="col-lg-4 col-md-6">
+                    <div class="feature-card">
+                        <div class="feature-icon">
+                            <i class="fas fa-mobile-alt"></i>
+                        </div>
+                        <h3 class="feature-title">Mobile Friendly</h3>
+                        <p class="feature-text">Access all features on any device for learning on the go.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
     
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
             <div class="row">
-                <div class="col-lg-4">
-                    <h5>Sign Language</h5>
+                <div class="col-lg-4 mb-4">
+                    <h5>GestureMate</h5>
                     <p>Empowering communication through technology</p>
+                    <div class="mt-3">
+                        <a href="#" class="btn btn-outline-light btn-sm me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="btn btn-outline-light btn-sm"><i class="fab fa-youtube"></i></a>
+                    </div>
                 </div>
-                <div class="col-lg-4">
+                <div class="col-lg-4 mb-4">
                     <h5>Quick Links</h5>
                     <ul class="list-unstyled">
                         <li><a href="{% url 'Home' %}" class="footer-link">Home</a></li>
                         <li><a href="{% url 'text_to_sign' %}" class="footer-link">Text to Sign</a></li>
                         <li><a href="{% url 'video' %}" class="footer-link">Find the Sign</a></li>
+                        <li><a href="{% url 'text-animation' %}" class="footer-link">Animated Sign</a></li>
+                        <li><a href="{% url 'learn' %}" class="footer-link">Learn</a></li>
                     </ul>
                 </div>
-                <div class="col-lg-4">
-                    <h5>Contact</h5>
-                    <p>Phone: 4567-4555-102</p>
-                    <p>Email: info@signlanguage.com</p>
+                <div class="col-lg-4 mb-4">
+                    <h5>Contact Us</h5>
+                    <p><i class="fas fa-phone me-2"></i> 4567-4555-102</p>
+                    <p><i class="fas fa-envelope me-2"></i> info@gesturemate.com</p>
+                    <p><i class="fas fa-map-marker-alt me-2"></i> 123 Sign Street, Language City</p>
                 </div>
             </div>
-            <div class="text-center mt-4">
-                <p class="mb-0">Copyright © 2024. All rights reserved.</p>
+            <div class="text-center copyright">
+                <p class="mb-0">Copyright © 2024 GestureMate. All rights reserved.</p>
             </div>
         </div>
     </footer>
     {% endblock %}
 
+    <!-- Bootstrap JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Sweet Alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        // Convert Django messages to Sweet Alert
+        {% if messages %}
+            {% for message in messages %}
+                Swal.fire({
+                    title: '{{ message }}',
+                    icon: '{% if message.tags == "error" %}error{% elif message.tags == "warning" %}warning{% else %}success{% endif %}',
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+            {% endfor %}
+        {% endif %}
+    </script>
 </body>
 </html>

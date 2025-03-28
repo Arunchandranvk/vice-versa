@@ -50,7 +50,8 @@ def display_sign_gif(word):
         "broke": "gifs/broken.gif",
         "broken": "gifs/broken.gif",
         "love": "gifs/love.jpeg",
-        "I do not know": "gifs/i_dont_know.gif",
+        "I don't know": "gifs/i_dont_know.gif",
+        "don't": "gifs/i_dont_know.gif",
         "cat": "gifs/cat.webp",
         "help": "gifs/help.gif",
         "sorry": "gifs/sorry.gif",
@@ -109,11 +110,11 @@ def main():
     
     if text:
         # Step 2: Process Text
-        simplified_text = process_text(text)
-        print("Processed Text:", simplified_text)
+        # simplified_text = process_text(text)
+        # print("Processed Text:", simplified_text)
         
         # Step 3: Display Sign Language GIFs
-        for word in simplified_text.split():
+        for word in text.split():
             display_sign_gif(word)
 
 if __name__ == "__main__":
